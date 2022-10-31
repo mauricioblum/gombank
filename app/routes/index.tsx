@@ -1,8 +1,50 @@
-import type { LinksFunction } from '@remix-run/node';
+import type { ActionFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { redirect } from '@remix-run/node';
+import { Form } from '@remix-run/react';
 import { Button } from '../components';
-import styles from '../styles/tailwind.css';
+import { createUserSession, getUserSession, login } from '../utils/session.server';
 
-export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
+function validateUrl(url: any) {
+  console.log(url);
+  let urls = ['/', '/login'];
+  if (urls.includes(url)) {
+    return url;
+  }
+  return '/dashboard';
+}
+
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const accountNumber = formData.get('accountNumber')?.toString();
+  const password = formData.get('password')?.toString();
+  const redirectTo = validateUrl(formData.get('redirectTo') || '/dashboard');
+
+  if (!accountNumber || !password) {
+    return null;
+  }
+  const data = await login({ accountNumber, password });
+
+  if (!data || data.error) {
+    return json(
+      {
+        error: data?.error || 'Invalid credentials',
+      },
+      { status: 401 }
+    );
+  }
+
+  return createUserSession(data.user.id, redirectTo);
+};
+
+export async function loader({ request }: { request: Request }) {
+  const session = await getUserSession(request);
+
+  if (session && session.has('userId')) {
+    return redirect('/dashboard');
+  }
+  return null;
+}
 
 export default function Index() {
   return (
@@ -13,7 +55,7 @@ export default function Index() {
         </div>
 
         <div className="mt-10">
-          <form action="#">
+          <Form method="post">
             <div className="flex flex-col mb-6">
               <label
                 htmlFor="accountNumber"
@@ -45,8 +87,10 @@ export default function Index() {
               />
             </div>
 
-            <Button className="w-full">Login</Button>
-          </form>
+            <Button type="submit" className="w-full">
+              Login
+            </Button>
+          </Form>
         </div>
       </div>
     </div>
