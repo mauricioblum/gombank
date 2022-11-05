@@ -10,7 +10,7 @@ export default function Dashboard() {
           {
             id: 'dashboard',
             title: 'Dashboard',
-            to: '/dashboard',
+            to: '/dashboard/',
           },
           {
             id: 'my-wallets',

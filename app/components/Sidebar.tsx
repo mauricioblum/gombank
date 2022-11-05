@@ -1,5 +1,6 @@
-import { NavLink } from '@remix-run/react';
+import { NavLink, useMatches } from '@remix-run/react';
 import React from 'react';
+import classNames from 'classnames';
 
 interface SidebarItem {
   id: string;
@@ -13,6 +14,10 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ sidebarTitle, items }) => {
+  const matches = useMatches();
+
+  const currentPath = matches.at(-1)?.pathname ?? '';
+
   return (
     <aside className="h-screen lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-neutral-800 drop-shadow-md">
       <div className="text-gray-100 text-xl">
@@ -26,11 +31,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ sidebarTitle, items }) => {
         <NavLink
           key={item.id}
           to={item.to}
-          className={({ isActive }) =>
-            isActive
-              ? 'p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-lime-400 font-bold'
-              : 'p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-lime-600 text-white font-bold'
-          }
+          className={classNames(
+            'p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer font-bold',
+            {
+              'text-lime-400': currentPath === item.to,
+              'text-white hover:bg-lime-600': currentPath !== item.to,
+            }
+          )}
         >
           {item.title}
         </NavLink>
