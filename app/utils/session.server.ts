@@ -43,7 +43,6 @@ const storage = createCookieSessionStorage({
     path: '/',
     maxAge: 12600,
     httpOnly: true,
-    expires: new Date(Date.now() + 12600000),
   },
 });
 
@@ -52,9 +51,9 @@ export function getUserSession(request: Request): Promise<Session> {
 }
 
 export async function createUserSession(userId: string, redirectTo: string) {
-  console.log('🚀 ~ createUserSession ~ redirectTo', redirectTo);
   const session = await storage.getSession();
   session.set('userId', userId);
+  session.set('token', 'FAKE_USER_TOKEN');
   return redirect(redirectTo, {
     headers: {
       'Set-Cookie': await storage.commitSession(session, {

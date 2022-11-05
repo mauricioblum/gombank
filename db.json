@@ -10,7 +10,27 @@
       "id": "002",
       "accountNumber": "1001",
       "name": "User",
-      "password": "123"
+      "password": "123",
+      "wallets": [
+        {
+          "id": "eur-1",
+          "name": "Euro Wallet",
+          "currency": "EUR",
+          "balance": 34000
+        },
+        {
+          "id": "usd-1",
+          "name": "Dollar Wallet",
+          "currency": "USD",
+          "balance": 11332
+        },
+        {
+          "id": "cad-1",
+          "name": "Canadian Wallet",
+          "currency": "CAD",
+          "balance": 100
+        }
+      ]
     }
   ]
 }
