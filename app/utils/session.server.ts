@@ -6,6 +6,8 @@ type LoginForm = {
   password: string;
 };
 
+export type ToastMessage = { message: string; type: 'success' | 'error' };
+
 export async function login({ accountNumber, password }: LoginForm) {
   const request = await fetch(`${process.env.APP_URL}/api/login`, {
     method: 'POST',
@@ -22,21 +24,9 @@ export async function login({ accountNumber, password }: LoginForm) {
   return response;
 }
 
-export async function logout(request: Request) {
-  const session = await getUserSession(request);
-  return redirect('/', {
-    headers: {
-      'Set-Cookie': await storage.destroySession(session),
-    },
-  });
-}
-
 const storage = createCookieSessionStorage({
   cookie: {
     name: 'GomBank_session_new',
-    // normally you want this to be `secure: true`
-    // but that doesn't work on localhost for Safari
-    // https://web.dev/when-to-use-local-https/
     secure: process.env.NODE_ENV === 'production',
     secrets: ['gombank123123123'],
     sameSite: 'lax',
@@ -45,6 +35,15 @@ const storage = createCookieSessionStorage({
     httpOnly: true,
   },
 });
+
+export async function logout(request: Request) {
+  const session = await getUserSession(request);
+  return redirect('/', {
+    headers: {
+      'Set-Cookie': await storage.destroySession(session),
+    },
+  });
+}
 
 export function getUserSession(request: Request): Promise<Session> {
   return storage.getSession(request.headers.get('cookie'));

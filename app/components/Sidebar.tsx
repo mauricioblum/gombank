@@ -31,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ sidebarTitle, items }) => {
         <NavLink
           key={item.id}
           to={item.to}
+          prefetch="intent"
           className={classNames(
             'p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer font-bold',
             {

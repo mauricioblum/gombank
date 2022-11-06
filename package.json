@@ -20,7 +20,9 @@
     "react": "^18.2.0",
     "react-currency-input-field": "^3.6.9",
     "react-dom": "^18.2.0",
-    "react-table": "^7.8.0"
+    "react-hot-toast": "^2.4.0",
+    "react-table": "^7.8.0",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.7.4",
