@@ -144,7 +144,11 @@ function Table({ columns, data }: TableProps) {
               return (
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                    return (
+                      <td {...cell.getCellProps()} className="min-w-[150px]">
+                        {cell.render('Cell')}
+                      </td>
+                    );
                   })}
                 </tr>
               );

@@ -12,6 +12,7 @@ export const Button: React.FC<IButtonProps> = ({
   children,
   variant = 'primary',
   className,
+  disabled,
   ...rest
 }) => {
   return (
@@ -26,6 +27,8 @@ export const Button: React.FC<IButtonProps> = ({
             variant === 'secondary',
           'bg-white hover:bg-neutral-700 text-neutral-700 hover:text-white border-neutral-700 hover:border-neutral-700':
             variant === 'tertiary',
+          'cursor-not-allowed bg-neutral-200 text-white border-neutral-200 hover:bg-neutral-200 hover:border-neutral-200':
+            disabled,
         },
         className
       )}

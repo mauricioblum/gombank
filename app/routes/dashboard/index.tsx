@@ -18,7 +18,7 @@ type Wallet = {
   transactions: Transaction[];
 };
 
-type DashboardLoaderData = {
+export type DashboardLoaderData = {
   user: {
     id: string;
     accountNumber: string;
