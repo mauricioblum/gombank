@@ -1,6 +1,6 @@
-import { json, redirect } from '@remix-run/node';
-import { Form, useActionData, useLoaderData, useTransition } from '@remix-run/react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { redirect } from '@remix-run/node';
+import { Form, useLoaderData, useTransition } from '@remix-run/react';
+import { useEffect, useRef, useState } from 'react';
 import type { DashboardLoaderData } from '.';
 import { Button, Select, TransactionsTable, WalletCard } from '../../components';
 import { useDialog } from '../../providers/DialogProvider';
@@ -44,7 +44,7 @@ export async function action({ request }: { request: Request }) {
   const session = await getMessageSession(request.headers.get('cookie'));
 
   try {
-    const newWalletUserRequest = await fetch(`${process.env.APP_URL}/api/addWallet`, {
+    await fetch(`${process.env.APP_URL}/api/addWallet`, {
       method: 'POST',
       body: JSON.stringify({
         name: walletName,
@@ -54,15 +54,9 @@ export async function action({ request }: { request: Request }) {
       headers: { 'Content-Type': 'application/json' },
     });
     setSuccessMessage(session, 'Wallet added successfully!');
-    const { user } = (await newWalletUserRequest.json()) as DashboardLoaderData;
-    return json(
-      {
-        user,
-      },
-      {
-        headers: { 'Set-Cookie': await commitSession(session) },
-      }
-    );
+    return redirect('/dashboard/my-wallets', {
+      headers: { 'Set-Cookie': await commitSession(session) },
+    });
   } catch (err) {
     console.log(err);
     setErrorMessage(session, 'Erro adding Wallet, please try again!');
@@ -139,12 +133,7 @@ const DialogContent = ({
 };
 
 export default function MyWallets() {
-  const { user: loaderUser, currencies } = useLoaderData<typeof loader>();
-  const data = useActionData<typeof action>();
-
-  const user = useMemo(() => {
-    return data?.user || loaderUser;
-  }, [loaderUser, data]);
+  const { user, currencies } = useLoaderData<typeof loader>();
 
   const { openDialog, closeDialog } = useDialog();
   const [selectedWallet, setSelectedWallet] = useState(user.wallets[0] || null);

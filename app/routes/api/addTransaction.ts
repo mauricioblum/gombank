@@ -3,7 +3,6 @@ import { json } from '@remix-run/node';
 import fs from 'fs';
 import path from 'path';
 import type database from '../../../db.json';
-
 import { randomId } from '../../utils/uuid.server';
 
 export const action: ActionFunction = async ({ request }) => {
@@ -12,7 +11,7 @@ export const action: ActionFunction = async ({ request }) => {
     const dbFile = await fs.promises.readFile(path.resolve('./db.json'), { encoding: 'utf8' });
     const db = JSON.parse(dbFile) as typeof database;
     const users = db.users;
-    const { name, currency, accountNumber } = body;
+    const { accountNumber, walletId, beneficiary, iban, currency, amount } = body;
 
     const user = users.find((user) => {
       return user.accountNumber === accountNumber;
@@ -21,17 +20,31 @@ export const action: ActionFunction = async ({ request }) => {
       const newUser = { ...user };
       const userWallets = newUser.wallets;
 
-      const newWallet = {
-        id: randomId(),
-        name,
-        currency,
-        balance: 10000,
-        transactions: [],
-      };
+      const wallet = userWallets?.find((w) => w.id === walletId);
+      const walletIndex = userWallets?.findIndex((w) => w.id === walletId) ?? -1;
 
-      userWallets?.push(newWallet);
-      newUser.wallets = userWallets;
-      db.users[db.users.indexOf(user)] = newUser;
+      if (wallet) {
+        const walletTransactions = wallet.transactions ? [...wallet.transactions] : [];
+
+        const newTransaction = {
+          id: randomId(),
+          beneficiary,
+          amount: {
+            value: amount,
+            currency,
+          },
+          date: new Date().toISOString(),
+          iban,
+        };
+
+        walletTransactions.push(newTransaction);
+        const currentWallets = db.users[db.users.indexOf(user)].wallets;
+
+        if (currentWallets && walletIndex !== -1) {
+          currentWallets[walletIndex].transactions = walletTransactions;
+        }
+      }
+
       const newDB = JSON.stringify(db, null, 2);
 
       try {

@@ -106,6 +106,14 @@ function Table({ columns, data }: TableProps) {
       data,
       defaultColumn,
       disableMultiSort: true,
+      initialState: {
+        sortBy: [
+          {
+            id: 'date',
+            desc: true,
+          },
+        ],
+      },
     },
     useFilters,
     useGlobalFilter,

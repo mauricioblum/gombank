@@ -136,6 +136,8 @@ export default function Transfer() {
               }
             }}
           />
+          <input type="hidden" name="walletId" value={selectedWallet.id} />
+          <input type="hidden" name="accountNumber" value={user.accountNumber} />
           <p className="mt-2 mb-1">
             Balance: <b>{formatCurrency(selectedWallet.balance, selectedWallet.currency)}</b>
           </p>
