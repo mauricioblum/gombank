@@ -6,7 +6,7 @@ type LoginForm = {
   password: string;
 };
 
-export type ToastMessage = { message: string; type: 'success' | 'error' };
+export type ToastMessage = { message: string; type: 'success' | 'error' | 'clean' };
 
 export async function login({ accountNumber, password }: LoginForm) {
   const request = await fetch(`${process.env.APP_URL}/api/login`, {

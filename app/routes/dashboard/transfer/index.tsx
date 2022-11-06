@@ -9,7 +9,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { requireUserSession } from '../../../session';
 import { formatCurrency } from '../../../utils/formatCurrency';
 import type { DashboardLoaderData } from '../index';
-import { destroySession, getMessageSession } from '../../../utils/message.server';
+import { commitSession, destroySession, getMessageSession } from '../../../utils/message.server';
 
 type Rates =
   | {
@@ -63,7 +63,7 @@ export async function loader({ request }: { request: Request }) {
       user,
       currencies: currencyMap,
     },
-    { headers: { 'Set-Cookie': await destroySession(messageSession) } }
+    { headers: { 'Set-Cookie': await commitSession(messageSession) } }
   );
 }
 
@@ -138,6 +138,11 @@ export default function Transfer() {
           />
           <input type="hidden" name="walletId" value={selectedWallet.id} />
           <input type="hidden" name="accountNumber" value={user.accountNumber} />
+          <input
+            type="hidden"
+            name="amountToDebit"
+            value={isExchange ? getExchangeRate(amount) : amount}
+          />
           <p className="mt-2 mb-1">
             Balance: <b>{formatCurrency(selectedWallet.balance, selectedWallet.currency)}</b>
           </p>

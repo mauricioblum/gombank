@@ -11,19 +11,13 @@ export async function action({ request }: { request: Request }) {
 
   const formData = await request.formData();
   const walletId = formData.get('walletId')?.toString();
-  console.log('🚀 ~ action ~ walletId', walletId);
   const beneficiary = formData.get('beneficiary')?.toString();
-  console.log('🚀 ~ action ~ beneficiary', beneficiary);
   const accountNumber = formData.get('accountNumber')?.toString();
-  console.log('🚀 ~ action ~ accountNumber', accountNumber);
   const balance = formData.get('balance')?.toString();
-  console.log('🚀 ~ action ~ balance', balance);
   const iban = formData.get('iban')?.toString();
-  console.log('🚀 ~ action ~ iban', iban);
   const amount = formData.get('amount')?.toString();
-  console.log('🚀 ~ action ~ amount', amount);
+  const amountToDebit = formData.get('amountToDebit')?.toString();
   const currency = formData.get('currency')?.toString();
-  console.log('🚀 ~ action ~ currency', currency);
 
   const notEnoughFunds = Number(amount) > Number(balance);
 
@@ -43,6 +37,7 @@ export async function action({ request }: { request: Request }) {
         beneficiary,
         iban,
         amount,
+        amountToDebit,
         currency,
       }),
       headers: { 'Content-Type': 'application/json' },
@@ -55,7 +50,7 @@ export async function action({ request }: { request: Request }) {
   }
 
   setSuccessMessage(session, 'You transfered money with success!');
-  return redirect('/dashboard/', {
+  return redirect('/dashboard?receipt=true', {
     headers: { 'Set-Cookie': await commitSession(session) },
   });
 }

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useRef, useState } from 'react';
 import { Dialog } from '../components';
 
 interface DialogContextData {
-  openDialog(content?: React.ReactNode): void;
+  openDialog(content?: React.ReactNode, replaceUrl?: string): void;
   closeDialog(): void;
 }
 
@@ -15,16 +15,22 @@ const DialogContext = createContext<DialogContextData>({} as DialogContextData);
 const DialogProvider: React.FC<DialogProviderProps> = ({ children }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [content, setContent] = useState<React.ReactNode>(null);
+  const [replaceUrl, setReplaceUrl] = useState('');
 
-  const handleOpen = (content?: React.ReactNode) => {
+  const handleOpen = (content?: React.ReactNode, replace?: string) => {
+    if (replace) {
+      setReplaceUrl(replace);
+    }
     if (dialogRef.current && content) {
       setContent(content);
+      dialogRef.current.removeAttribute('open');
       dialogRef.current.showModal();
     }
   };
 
   const handleClose = () => {
     if (dialogRef.current) {
+      replaceUrl && window.location.replace(replaceUrl);
       dialogRef.current.close();
     }
   };

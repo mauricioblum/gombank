@@ -1,7 +1,7 @@
 import type { Session } from '@remix-run/node';
 import { createCookieSessionStorage } from '@remix-run/node';
 
-export type ToastMessage = { message: string; type: 'success' | 'error' };
+export type ToastMessage = { message: string; type: 'success' | 'error' | 'clean' };
 
 const ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
 
@@ -20,6 +20,10 @@ export const {
     secure: true,
   },
 });
+
+export function cleanMessages(session: Session) {
+  session.flash('toastMessage', { message: '', type: 'clean' } as ToastMessage);
+}
 
 export function setSuccessMessage(session: Session, message: string) {
   session.flash('toastMessage', { message, type: 'success' } as ToastMessage);

@@ -41,7 +41,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     throw new Error('Message should have a type');
   }
 
-  console.log('Loader root called?');
   return json({
     toastMessage,
     headers: { 'Set-Cookie': await destroySession(session) },
@@ -63,6 +62,10 @@ export default function App() {
         break;
       case 'error':
         toast.error(message);
+        break;
+      case 'clean':
+        toast.dismiss();
+        toast.remove();
         break;
       default:
         throw new Error(`${type} is not handled`);

@@ -11,7 +11,7 @@ export const action: ActionFunction = async ({ request }) => {
     const dbFile = await fs.promises.readFile(path.resolve('./db.json'), { encoding: 'utf8' });
     const db = JSON.parse(dbFile) as typeof database;
     const users = db.users;
-    const { accountNumber, walletId, beneficiary, iban, currency, amount } = body;
+    const { accountNumber, walletId, beneficiary, iban, currency, amount, amountToDebit } = body;
 
     const user = users.find((user) => {
       return user.accountNumber === accountNumber;
@@ -38,6 +38,9 @@ export const action: ActionFunction = async ({ request }) => {
         };
 
         walletTransactions.push(newTransaction);
+
+        wallet.balance = wallet.balance - amountToDebit;
+
         const currentWallets = db.users[db.users.indexOf(user)].wallets;
 
         if (currentWallets && walletIndex !== -1) {

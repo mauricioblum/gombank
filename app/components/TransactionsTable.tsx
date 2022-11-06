@@ -9,6 +9,7 @@ import type {
 import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 import type { Transaction } from '../routes/dashboard/index';
 import { formatCurrency } from '../utils/formatCurrency';
+import { formatDate } from '../utils/formatDate';
 
 interface ColumnFilter {
   column: UseFiltersColumnProps<{}>;
@@ -128,8 +129,8 @@ function Table({ columns, data }: TableProps) {
         globalFilter={state.globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <div className="min-h-full">
-        <table {...getTableProps()} className="table-auto rounded-lg border-collapse w-full">
+      <div className="min-h-full overflow-x-auto">
+        <table {...getTableProps()} className="table-fixed rounded-lg border-collapse w-full">
           <thead className="bg-lime-600 text-white py-2 text-lg text-left">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -153,7 +154,7 @@ function Table({ columns, data }: TableProps) {
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
-                      <td {...cell.getCellProps()} className="min-w-[150px]">
+                      <td {...cell.getCellProps()} className="overflow-x-auto">
                         {cell.render('Cell')}
                       </td>
                     );
@@ -258,6 +259,9 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactio
             Header: 'Date',
             accessor: 'date',
             disableFilters: true,
+            Cell: ({ value }: Cell) => {
+              return formatDate(value);
+            },
           },
           {
             Header: 'IBAN',

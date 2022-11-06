@@ -1,11 +1,11 @@
 import type { ActionFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import db from '../../../db.json';
-import { commitSession, getMessageSession } from '../../utils/message.server';
+import { destroySession, getMessageSession } from '../../utils/message.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const body = await request.json();
-  const session = await getMessageSession(request.headers.get('cookie'));
+  const messageSession = await getMessageSession(request.headers.get('cookie'));
   try {
     const users = db.users;
     const { accountNumber, password } = body;
@@ -15,14 +15,10 @@ export const action: ActionFunction = async ({ request }) => {
     });
     if (user && user.password === password) {
       const foundUser = { ...user, password: undefined };
-      return json(
-        { user: foundUser },
-        {
-          headers: { 'Set-Cookie': await commitSession(session) },
-        }
-      );
+      await destroySession(messageSession);
+      return json({ user: foundUser });
     } else {
-      return json({ error: 'User not found or incorrect password!' });
+      return json({ error: 'Account not found or incorrect password!' });
     }
   } catch (err) {
     return json({ error: 'Unknown error!' });

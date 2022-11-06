@@ -165,7 +165,7 @@ export default function MyWallets() {
             }}
           />
         ))}
-        <div className="relative flex flex-col items-center justify-center shadow-md rounded-xl p-5 pb-3 w-64 h-44 cursor-pointer bg-white">
+        <div className="relative flex flex-col items-center justify-center shadow-md rounded-xl p-5 pb-3 w-64 h-32 xl:h-44 cursor-pointer bg-white">
           <Button
             onClick={() => {
               handleAddWallet();

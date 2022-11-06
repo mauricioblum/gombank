@@ -20,10 +20,13 @@ export const WalletCard: React.FC<WalletCardProps> = ({
   return (
     <div
       onClick={onClick}
-      className={classNames('relative shadow-md rounded-xl p-5 pb-3 w-64 h-44 cursor-pointer', {
-        'bg-lime-600 text-white': active,
-        'bg-white text-neutral-500': !active,
-      })}
+      className={classNames(
+        'relative shadow-md rounded-xl p-5 pb-3 w-64 h-32 xl:h-44 cursor-pointer',
+        {
+          'bg-lime-600 text-white': active,
+          'bg-white text-neutral-500': !active,
+        }
+      )}
     >
       <div className="absolute top-3 left-2">{currency}</div>
 

@@ -3,7 +3,7 @@ import { Sidebar } from '../components';
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen flex bg-neutral-500">
+    <div className="h-full min-h-screen flex bg-neutral-500">
       <Sidebar
         sidebarTitle="GomBank"
         items={[
