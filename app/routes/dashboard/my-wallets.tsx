@@ -1,16 +1,11 @@
-import { redirect } from '@remix-run/node';
-import { Form, useLoaderData, useTransition } from '@remix-run/react';
+import { json, redirect } from '@remix-run/node';
+import { Form, useActionData, useLoaderData, useTransition } from '@remix-run/react';
 import { useEffect, useRef, useState } from 'react';
 import type { DashboardLoaderData } from '.';
 import { Button, Select, TransactionsTable, WalletCard } from '../../components';
 import { useDialog } from '../../providers/DialogProvider';
+import { useToast } from '../../providers/ToastProvider';
 import { requireUserSession } from '../../session';
-import {
-  commitSession,
-  getMessageSession,
-  setErrorMessage,
-  setSuccessMessage,
-} from '../../utils/message.server';
 
 export async function loader({ request }: { request: Request }) {
   const currenciesRequest = await fetch(`${process.env.EXCHANGE_RATES_API_URL}.min.json`, {
@@ -41,7 +36,6 @@ export async function action({ request }: { request: Request }) {
   const walletName = formData.get('walletName')?.toString();
   const currency = formData.get('currency')?.toString();
   const accountNumber = formData.get('accountNumber')?.toString();
-  const session = await getMessageSession(request.headers.get('cookie'));
 
   try {
     await fetch(`${process.env.APP_URL}/api/addWallet`, {
@@ -53,15 +47,14 @@ export async function action({ request }: { request: Request }) {
       }),
       headers: { 'Content-Type': 'application/json' },
     });
-    setSuccessMessage(session, 'Wallet added successfully!');
-    return redirect('/dashboard/my-wallets', {
-      headers: { 'Set-Cookie': await commitSession(session) },
+    return json({
+      success: true,
+      message: 'Wallet added successfully',
     });
   } catch (err) {
-    console.log(err);
-    setErrorMessage(session, 'Erro adding Wallet, please try again!');
-    return redirect('/dashboard/my-wallets', {
-      headers: { 'Set-Cookie': await commitSession(session) },
+    return json({
+      success: false,
+      message: 'Error addind wallet!' + (err as Error).message,
     });
   }
 }
@@ -134,9 +127,22 @@ const DialogContent = ({
 
 export default function MyWallets() {
   const { user, currencies } = useLoaderData<typeof loader>();
+  const data = useActionData();
 
   const { openDialog, closeDialog } = useDialog();
+  const { showToast } = useToast();
   const [selectedWallet, setSelectedWallet] = useState(user.wallets[0] || null);
+
+  useEffect(() => {
+    if (data) {
+      if (data.success) {
+        showToast({ type: 'success', message: data.message });
+      } else if (data.success === false) {
+        showToast({ type: 'error', message: data.message });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const handleAddWallet = () => {
     openDialog(

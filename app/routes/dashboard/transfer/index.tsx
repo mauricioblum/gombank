@@ -9,7 +9,6 @@ import CurrencyInput from 'react-currency-input-field';
 import { requireUserSession } from '../../../session';
 import { formatCurrency } from '../../../utils/formatCurrency';
 import type { DashboardLoaderData } from '../index';
-import { commitSession, destroySession, getMessageSession } from '../../../utils/message.server';
 
 type Rates =
   | {
@@ -40,7 +39,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireUserSession(request);
-  const messageSession = await getMessageSession(request.headers.get('cookie'));
 
   const userInfoRequest = await fetch(`${process.env.APP_URL}/api/user/${session.get('userId')}`, {
     method: 'GET',
@@ -58,13 +56,10 @@ export async function loader({ request }: { request: Request }) {
   const currencies = await currenciesRequest.json();
   const currencyMap = Object.keys(currencies);
 
-  return json(
-    {
-      user,
-      currencies: currencyMap,
-    },
-    { headers: { 'Set-Cookie': await commitSession(messageSession) } }
-  );
+  return json({
+    user,
+    currencies: currencyMap,
+  });
 }
 
 export default function Transfer() {

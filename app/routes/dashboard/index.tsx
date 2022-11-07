@@ -3,8 +3,8 @@ import { useLoaderData } from '@remix-run/react';
 import { useEffect } from 'react';
 import { Button, TransactionsTable } from '../../components';
 import { useDialog } from '../../providers/DialogProvider';
+import { useToast } from '../../providers/ToastProvider';
 import { requireUserSession } from '../../session';
-import { destroySession, getMessageSession } from '../../utils/message.server';
 
 export type Transaction = {
   id: string;
@@ -34,8 +34,8 @@ export type DashboardLoaderData = {
 export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
   const receipt = url.searchParams.get('receipt');
+  const error = url.searchParams.get('error');
   const session = await requireUserSession(request);
-  const messageSession = await getMessageSession(request.headers.get('cookie'));
   const userInfoRequest = await fetch(`${process.env.APP_URL}/api/user/${session.get('userId')}`, {
     method: 'GET',
     headers: {
@@ -45,13 +45,11 @@ export async function loader({ request }: { request: Request }) {
   });
   const { user } = (await userInfoRequest.json()) as DashboardLoaderData;
 
-  return json(
-    {
-      user,
-      receipt,
-    },
-    { headers: { 'Set-Cookie': await destroySession(messageSession) } }
-  );
+  return json({
+    user,
+    receipt,
+    error,
+  });
 }
 
 const ReceiptDialog = ({
@@ -87,15 +85,23 @@ const ReceiptDialog = ({
         </p>
       </div>
       <div className="mt-2">
-        <Button onClick={closeDialog}>Close</Button>
+        <Button
+          onClick={() => {
+            window.location.replace('/dashboard/');
+            closeDialog();
+          }}
+        >
+          Close
+        </Button>
       </div>
     </div>
   );
 };
 
 export default function DashboardIndex() {
-  const { user, receipt } = useLoaderData<typeof loader>();
+  const { user, receipt, error } = useLoaderData<typeof loader>();
   const { openDialog, closeDialog } = useDialog();
+  const { showToast } = useToast();
 
   const allTransactions = user.wallets.flatMap((info) => info.transactions).filter(Boolean);
   const lastTransaction = allTransactions.sort((a, b) => {
@@ -108,9 +114,12 @@ export default function DashboardIndex() {
         <ReceiptDialog closeDialog={closeDialog} transaction={lastTransaction} />,
         '/dashboard/'
       );
+      showToast({ type: 'success', message: 'Transfer completed sucessfully!' });
+    } else if (error) {
+      showToast({ type: 'error', message: 'Your transfer was not suceeded! Try again later.' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [receipt]);
+  }, [receipt, error]);
 
   return (
     <div className="content p-6">

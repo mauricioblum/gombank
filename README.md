@@ -23,6 +23,8 @@ This project uses a free Github Hosted Exchange Rate API, that can be found in [
 
 This projects uses a file called `db.json` to store the account and transaction information. As you use the application, this file will be modified.
 
+This database is resetted after every log out.
+
 You can login using the following account number and password:
 
 ```
@@ -58,6 +60,7 @@ A demo of this project can be viewed here: [https://gombank.vercel.app/](gombank
 
 - Better control of Wallets (edit, delete)
 - View individual transactions information
+- Better toast notification service
 - Real Database connection with persistence
 
 ## Authors

@@ -5,7 +5,6 @@ import fs from 'fs';
 import path from 'path';
 
 export const loader: LoaderFunction = async ({ params }) => {
-  console.log('🚀 ~ dbFile ~ __dirname');
   try {
     const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../app/db/db.json`), {
       encoding: 'utf8',

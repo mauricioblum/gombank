@@ -3,11 +3,9 @@ import { json } from '@remix-run/node';
 import type database from '../../db/db.json';
 import fs from 'fs';
 import path from 'path';
-import { destroySession, getMessageSession } from '../../utils/message.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const body = await request.json();
-  const messageSession = await getMessageSession(request.headers.get('cookie'));
   try {
     const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../app/db/db.json`), {
       encoding: 'utf8',
@@ -21,7 +19,6 @@ export const action: ActionFunction = async ({ request }) => {
     });
     if (user && user.password === password) {
       const foundUser = { ...user, password: undefined };
-      await destroySession(messageSession);
       return json({ user: foundUser });
     } else {
       return json({ error: 'Account not found or incorrect password!' });
