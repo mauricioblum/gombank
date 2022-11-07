@@ -12,12 +12,22 @@ A proof of concept banking application.
 
 - Wallet control (Add Wallets)
 - Transfer to new accounts
-- Exchange Rate API
+- Exchange Rate for transfers between different currencies
 - Responsive
 
 ## Documentation
 
 This project uses Remix Run, for more information about it, check out [Remix Documentation](https://remix.run/docs/en/v1)
+
+This project uses a free Github Hosted Exchange Rate API, that can be found in [https://github.com/fawazahmed0/currency-api](https://github.com/fawazahmed0/currency-api)
+
+This projects uses a file called `db.json` to store the account and transaction information. As you use the application, this file will be modified.
+
+You can login using the following account number and password:
+
+Account Number: 1001
+
+Password: 123
 
 ## Run Locally
 
@@ -30,6 +40,8 @@ Install dependencies
 ```bash
   npm install
 ```
+
+Add the .env variables in a .env file, a .env.example file is listed so you can use it.
 
 Start the server
 
@@ -45,6 +57,7 @@ A demo of this project can be viewed here: [https://vercel.com](vercel.com)
 
 - Better control of Wallets (edit, delete)
 - View individual transactions information
+- Real Database connection with persistence
 
 ## Authors
 
