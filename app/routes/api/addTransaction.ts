@@ -2,13 +2,15 @@ import type { ActionFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import fs from 'fs';
 import path from 'path';
-import type database from '../../../db.json';
+import type database from '../../db/db.json';
 import { randomId } from '../../utils/uuid.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const body = await request.json();
   try {
-    const dbFile = await fs.promises.readFile(path.resolve('./db.json'), { encoding: 'utf8' });
+    const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../app/db/db.json`), {
+      encoding: 'utf8',
+    });
     const db = JSON.parse(dbFile) as typeof database;
     const users = db.users;
     const { accountNumber, walletId, beneficiary, iban, currency, amount, amountToDebit } = body;
@@ -51,7 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
       const newDB = JSON.stringify(db, null, 2);
 
       try {
-        await fs.promises.writeFile(path.resolve('./db.json'), newDB);
+        await fs.promises.writeFile(path.resolve(`${__dirname}/../app/db/db.json`), newDB);
       } catch (err) {
         console.log('🚀 ~ const:ActionFunction= ~ err', err);
       }

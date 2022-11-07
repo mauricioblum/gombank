@@ -1,12 +1,15 @@
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import type database from '../../../../db.json';
+import type database from '../../../db/db.json';
 import fs from 'fs';
 import path from 'path';
 
 export const loader: LoaderFunction = async ({ params }) => {
+  console.log('🚀 ~ dbFile ~ __dirname');
   try {
-    const dbFile = await fs.promises.readFile(path.resolve('./db.json'), { encoding: 'utf8' });
+    const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../app/db/db.json`), {
+      encoding: 'utf8',
+    });
     const db = JSON.parse(dbFile) as typeof database;
 
     const users = db.users;
