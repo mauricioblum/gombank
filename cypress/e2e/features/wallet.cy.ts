@@ -21,6 +21,9 @@ describe('Add Wallet page', () => {
     cy.get('dialog').get('input[name="walletName"]').type('Test Wallet');
     cy.get('button[type="submit"]').click();
     cy.get(':nth-child(4) > .flex-col > .flex > p').should('have.text', 'Test Wallet');
+  });
+
+  after(() => {
     cy.visit('/sign-out');
   });
 });

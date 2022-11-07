@@ -5,3 +5,5 @@ node_modules
 /public/build
 .env
 tailwind.css
+cypress/videos/
+cypress/downloads/

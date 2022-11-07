@@ -1,5 +1,5 @@
 describe('Transfer page', () => {
-  before(() => {
+  beforeEach(() => {
     cy.login();
     cy.visitAndCheck('/dashboard/transfer');
   });
@@ -13,5 +13,10 @@ describe('Transfer page', () => {
     cy.findByPlaceholderText('IBAN').type('LU100000000000000000');
     cy.findByPlaceholderText('Enter an amount').type('50');
     cy.get('button[type="submit"]').click();
+    cy.get('dialog > div.w-full > div > h3').should('have.text', 'Receipt of your Transfer');
+  });
+
+  after(() => {
+    cy.visit('/sign-out');
   });
 });

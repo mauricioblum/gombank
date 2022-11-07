@@ -64,6 +64,20 @@ You can build the image and run this container with this command:
 
 The app will be running at http://localhost:3000/
 
+## Test
+
+This app uses [Cypress](https://docs.cypress.io/guides/overview/why-cypress) for end to end testing. You can run the tests with the following command
+
+```bash
+  npm run test
+```
+
+You can also open the Cypress Dashboard with
+
+```bash
+  npm run cypress
+```
+
 ## Possible Improvements
 
 - Better control of Wallets (edit, delete)
