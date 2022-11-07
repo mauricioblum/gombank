@@ -44,6 +44,8 @@ Install dependencies
   npm install
 ```
 
+#### IMPORTANT
+
 Add the .env variables in a .env file, a .env.example file is listed so you can use it.
 
 Start the server
@@ -57,8 +59,10 @@ Start the server
 You can build the image and run this container with this command:
 
 ```bash
-  docker build -t gombank . && docker run -p 3000:3000 -d gombank
+  docker build -t gombank . && docker run -p 3000:3000 --env-file .env -d gombank
 ```
+
+The app will be running at http://localhost:3000/
 
 ## Possible Improvements
 
