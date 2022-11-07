@@ -22,6 +22,6 @@ export const loader: LoaderFunction = async ({ params }) => {
       return json({ error: 'User not found' });
     }
   } catch (err) {
-    return json({ error: 'Unknown error!' });
+    return json({ error: 'Unknown error!', err });
   }
 };
