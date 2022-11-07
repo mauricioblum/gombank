@@ -11,12 +11,13 @@
     "generate:css": "npx tailwindcss -o ./app/styles/tailwind.css"
   },
   "dependencies": {
+    "@netlify/functions": "^1.0.0",
     "@remix-run/node": "^1.7.4",
     "@remix-run/react": "^1.7.4",
-    "@remix-run/vercel": "^1.7.4",
-    "@vercel/node": "^2.4.4",
+    "@remix-run/netlify": "^1.7.4",
     "ariakit": "^2.0.0-next.41",
     "classnames": "^2.3.2",
+    "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "react-currency-input-field": "^3.6.9",
     "react-dom": "^18.2.0",

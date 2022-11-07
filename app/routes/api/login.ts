@@ -7,7 +7,7 @@ import path from 'path';
 export const action: ActionFunction = async ({ request }) => {
   const body = await request.json();
   try {
-    const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../app/db/db.json`), {
+    const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../../app/db/db.json`), {
       encoding: 'utf8',
     });
     const db = JSON.parse(dbFile) as typeof database;
