@@ -52,9 +52,13 @@ Start the server
   npm run dev
 ```
 
-## Demo
+## Run in a container
 
-A demo of this project can be viewed here: [https://gombank.vercel.app/](gombank.vercel.app/)
+You can build the image and run this container with this command:
+
+```bash
+  docker build -t gombank . && docker run -p 3000:3000 -d gombank
+```
 
 ## Possible Improvements
 

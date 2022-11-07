@@ -4,14 +4,14 @@ import fs from 'fs';
 import path from 'path';
 
 async function resetDatabase() {
-  const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../../app/db/db.json`), {
+  const dbFile = await fs.promises.readFile(path.resolve(`${__dirname}/../app/db/db.json`), {
     encoding: 'utf8',
   });
-  const seedFile = await fs.promises.readFile(path.resolve(`${__dirname}/../../app/db/seed.json`), {
+  const seedFile = await fs.promises.readFile(path.resolve(`${__dirname}/../app/db/seed.json`), {
     encoding: 'utf8',
   });
   if (dbFile && seedFile) {
-    await fs.promises.writeFile(path.resolve(`${__dirname}/../../app/db/db.json`), seedFile);
+    await fs.promises.writeFile(path.resolve(`${__dirname}/../app/db/db.json`), seedFile);
   }
 }
 
