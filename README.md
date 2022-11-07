@@ -25,9 +25,10 @@ This projects uses a file called `db.json` to store the account and transaction 
 
 You can login using the following account number and password:
 
+```
 Account Number: 1001
-
 Password: 123
+```
 
 ## Run Locally
 
@@ -51,7 +52,7 @@ Start the server
 
 ## Demo
 
-A demo of this project can be viewed here: [https://vercel.com](vercel.com)
+A demo of this project can be viewed here: [https://gombank.vercel.app/](gombank.vercel.app/)
 
 ## Possible Improvements
 
