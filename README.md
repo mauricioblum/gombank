@@ -1,34 +1,51 @@
-# Welcome to Remix!
+# GomBank
 
-- [Remix Docs](https://remix.run/docs)
+A proof of concept banking application.
 
-## Deployment
+## Tech Stack
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
+**Client:** React, Typescript, TailwindCSS
 
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
+**Server:** Remix App Server
 
-```sh
-npm i -g vercel
-vercel
+## Features
+
+- Wallet control (Add Wallets)
+- Transfer to new accounts
+- Exchange Rate API
+- Responsive
+
+## Documentation
+
+This project uses Remix Run, for more information about it, check out [Remix Documentation](https://remix.run/docs/en/v1)
+
+## Run Locally
+
+Clone the project
+
+Go to the project directory
+
+Install dependencies
+
+```bash
+  npm install
 ```
 
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
+Start the server
 
-## Development
-
-To run your Remix app locally, make sure your project's local dependencies are installed:
-
-```sh
-npm install
+```bash
+  npm run dev
 ```
 
-Afterwards, start the Remix development server like so:
+## Demo
 
-```sh
-npm run dev
-```
+A demo of this project can be viewed here: [https://vercel.com](vercel.com)
 
-Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
+## Possible Improvements
 
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+- Better control of Wallets (edit, delete)
+- View individual transactions information
+
+## Authors
+
+- [@mauricioblum](https://www.github.com/mauricioblum)
