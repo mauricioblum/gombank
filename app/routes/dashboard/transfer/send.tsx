@@ -1,6 +1,7 @@
 import { redirect } from '@remix-run/node';
 
 export async function action({ request }: { request: Request }) {
+  console.log('action called');
   const formData = await request.formData();
   const walletId = formData.get('walletId')?.toString();
   const beneficiary = formData.get('beneficiary')?.toString();

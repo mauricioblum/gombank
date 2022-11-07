@@ -25,7 +25,7 @@
           "id": "eur-1",
           "name": "Euro Wallet",
           "currency": "EUR",
-          "balance": 34000,
+          "balance": 33956,
           "transactions": [
             {
               "id": "3c841585-713e-4114-a563-d59225a79101",
@@ -46,6 +46,16 @@
               },
               "date": "2022-07-08T12:31:00.000Z",
               "iban": "LU80000000000001"
+            },
+            {
+              "id": "35592f25-cb2c-41d3-9386-c38b1649a540",
+              "beneficiary": "Tst",
+              "amount": {
+                "value": "44",
+                "currency": "EUR"
+              },
+              "date": "2022-11-07T14:59:50.559Z",
+              "iban": "LU800000000000000000"
             }
           ]
         },
